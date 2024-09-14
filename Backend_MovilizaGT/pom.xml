@@ -8,7 +8,7 @@
 		<version>2.7.17</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>gt.com.chn</groupId>
+	<groupId>gt.app</groupId>
 	<artifactId>MovilizaGT</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>initializer</name>
