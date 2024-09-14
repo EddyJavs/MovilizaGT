@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Crear Cuenta</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+
+        <!-- Nombre Completo -->
+        <ion-item>
+          <ion-label position="floating">Nombre Completo</ion-label>
+          <ion-input formControlName="fullName" type="text"></ion-input>
+        </ion-item>
+
+        <!-- Teléfono -->
+        <ion-item>
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input formControlName="phone" type="tel"></ion-input>
+        </ion-item>
+
+        <!-- Correo Electrónico -->
+        <ion-item>
+          <ion-label position="floating">Correo Electrónico</ion-label>
+          <ion-input formControlName="email" type="email"></ion-input>
+        </ion-item>
+
+        <!-- DPI -->
+        <ion-item>
+          <ion-label position="floating">DPI</ion-label>
+          <ion-input formControlName="dpi" type="text"></ion-input>
+        </ion-item>
+
+        <!-- Género -->
+        <ion-item>
+          <ion-label>Género</ion-label>
+          <ion-select formControlName="gender" placeholder="Seleccione">
+            <ion-select-option value="male">Masculino</ion-select-option>
+            <ion-select-option value="female">Femenino</ion-select-option>
+            <ion-select-option value="other">Otro</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Edad -->
+        <ion-item>
+          <ion-label position="floating">Edad</ion-label>
+          <ion-input formControlName="age" type="number"></ion-input>
+        </ion-item>
+
+        <!-- Contraseña -->
+        <ion-item>
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input formControlName="password" type="password" (ionInput)="checkPasswordStrength()"></ion-input>
+        </ion-item>
+
+        <!-- Nivel de Seguridad de la Contraseña -->
+        <ion-item lines="none">
+          <ion-label [color]="passwordStrengthColor">{{ passwordStrengthText }}</ion-label>
+        </ion-item>
+
+        <!-- Confirmar Contraseña -->
+        <ion-item>
+          <ion-label position="floating">Confirmar Contraseña</ion-label>
+          <ion-input formControlName="confirmPassword" type="password"></ion-input>
+        </ion-item>
+        <br>
+        <!-- Imágenes Opcionales -->
+        <ion-item-divider>Imágenes Opcionales</ion-item-divider>
+
+        <!-- Imagen Licencia (Frente) -->
+        <ion-item>
+          <ion-label>Imagen Licencia (Frente)</ion-label>
+          <ion-button expand="block" (click)="uploadLicenseFront()">Subir Imagen</ion-button>
+        </ion-item>
+
+        <!-- Imagen Licencia (Reverso) -->
+        <ion-item>
+          <ion-label>Imagen Licencia (Reverso)</ion-label>
+          <ion-button expand="block" (click)="uploadLicenseBack()">Subir Imagen</ion-button>
+        </ion-item>
+
+        <!-- Imagen DPI (Frente) -->
+        <ion-item>
+          <ion-label>Imagen DPI (Frente)</ion-label>
+          <ion-button expand="block" (click)="uploadDpiFront()">Subir Imagen</ion-button>
+        </ion-item>
+
+        <!-- Imagen DPI (Reverso) -->
+        <ion-item>
+          <ion-label>Imagen DPI (Reverso)</ion-label>
+          <ion-button expand="block" (click)="uploadDpiBack()">Subir Imagen</ion-button>
+        </ion-item>
+
+        <!-- Botón de Registro -->
+        <ion-button expand="full" type="submit" [disabled]="!registerForm.valid">Registrarse</ion-button>
+
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

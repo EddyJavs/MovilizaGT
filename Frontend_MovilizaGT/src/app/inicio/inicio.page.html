@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button> <!-- Menú con tres líneas -->
+    </ion-buttons>
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="main-content">
+  <ion-grid>
+    <ion-row>
+      <!-- Tarjeta para Conductor -->
+      <ion-col size="12" size-md="6">
+        <ion-card button (click)="goToCreateRoute()">
+          <div class="card-background" style="background-image: url('assets/images/conductor-responsable.jpg');"></div>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">
+              <ion-icon name="car-outline" slot="start"></ion-icon>
+              ¿Eres conductor?
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Publica tu ruta y lleva pasajeros.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Tarjeta para Pasajero -->
+      <ion-col size="12" size-md="6">
+        <ion-card button (click)="goToSearchRoute()">
+          <div class="card-background" style="background-image: url('assets/images/pasajero.jpg');"></div>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">
+              <ion-icon name="search-outline" slot="start"></ion-icon>
+              ¿Eres pasajero?
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Encuentra y reserva una ruta.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-menu side="start" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item button (click)="goToPreviousTrips()">
+        <ion-icon slot="start" name="time-outline"></ion-icon>
+        Ver mis viajes anteriores
+      </ion-item>
+      <ion-item button (click)="goToProfile()">
+        <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+        Completar información de mi perfil
+      </ion-item>
+      <ion-item button (click)="goToRateTrip()">
+        <ion-icon slot="start" name="star-outline"></ion-icon>
+        Calificar viaje
+      </ion-item>
+      <!-- Puedes agregar más opciones aquí -->
+    </ion-list>
+  </ion-content>
+</ion-menu>

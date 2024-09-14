@@ -1,0 +1,36 @@
+// Variables de color y espaciado
+$primary-color: #3880ff;
+$background-color: #ffffff;
+$border-radius: 10px;
+$spacing: 16px;
+
+ion-item {
+  --background: $background-color; // Fondo blanco para los campos de formulario
+  --border-radius: $border-radius; // Bordes redondeados
+  margin-bottom: $spacing; // Espaciado entre los elementos
+}
+
+#map {
+  height: 300px; // Altura fija del mapa
+  width: 100%; // Ancho completo
+  margin-top: 20px; // Espaciado superior
+  border-radius: 10px; // Bordes redondeados
+  position: relative;
+  overflow: hidden; // Evita que el mapa se desplace fuera del contenedor
+}
+
+ion-button {
+  margin-top: 10px;
+  --background: #87CEFA !important; // Forzar color azul claro
+  --border-radius: 8px;  // Bordes redondeados
+}
+
+// Estilos adicionales para mejor presentación
+ion-label {
+  color: darken($primary-color, 20%); // Color del texto ajustado para mejor contraste
+}
+
+ion-input, ion-datetime {
+  --padding-start: $spacing / 2; // Ajuste de padding interno
+  font-size: 16px; // Tamaño de fuente
+}

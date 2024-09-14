@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button> <!-- Botón de regreso -->
+    </ion-buttons>
+    <ion-title>Crear Rutas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="routeForm">
+    <ion-item>
+      <ion-label position="floating">Hora de Salida</ion-label>
+      <ion-input formControlName="startTime" type="time" placeholder="Ingresa la hora de salida"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Fecha</ion-label>
+      <ion-datetime formControlName="startDate" displayFormat="DD/MM/YYYY" placeholder="Selecciona la fecha"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Asientos disponibles</ion-label>
+      <ion-input formControlName="availableSeats" type="number" min="1" placeholder="¿Cuántos asientos tienes libres?"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Lugar de origen</ion-label>
+      <ion-input formControlName="startLocation" type="text" placeholder="Selecciona el punto de origen" #originInput></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Lugar de destino</ion-label>
+      <ion-input formControlName="endLocation" type="text" placeholder="Selecciona el punto de destino" #destinationInput></ion-input>
+    </ion-item>
+
+    <!-- Contenedor del mapa -->
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    <br>
+    <ion-button expand="full" type="submit" (click)="onCreateRoute()">Crear Ruta</ion-button>
+  </form>
+</ion-content>
