@@ -1,5 +1,6 @@
 package gt.app.MovilizaGT.controller;
 
+import gt.app.MovilizaGT.Utils.Response.RegisterResponse;
 import gt.app.MovilizaGT.service.UserService;
 import gt.app.MovilizaGT.Utils.Request.LoginRequest;
 import gt.app.MovilizaGT.entity.Person;
@@ -28,13 +29,14 @@ public class PersonController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Person> register(@RequestBody Person user) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody Person user) {
         try {
-            Person registeredUser = userService.register(user);
+            RegisterResponse registeredUser = userService.register(user);
             return ResponseEntity.ok(registeredUser);
         }catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(401).body(null);
+            return ResponseEntity.status(401).body(null
+            );
         }
 
     }
