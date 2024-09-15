@@ -1,13 +1,9 @@
 package gt.app.MovilizaGT.repository;
 
-
-import gt.app.MovilizaGT.entity.Route;
+import gt.app.MovilizaGT.entity.Stand;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface RouteRepository extends JpaRepository<Route, Integer> {
-
+public interface StandRepository extends JpaRepository<Stand, Integer> {
 }

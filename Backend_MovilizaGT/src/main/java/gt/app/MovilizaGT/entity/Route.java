@@ -21,9 +21,9 @@ public class Route {
     private String departureDate;
 
     @Column(name = "availableSeats")
-    private String availableSeats;
+    private Integer availableSeats;
 
     @Column(name = "FK_userId")
-    private String FK_userId;
+    private Integer FK_userId;
 
 }
