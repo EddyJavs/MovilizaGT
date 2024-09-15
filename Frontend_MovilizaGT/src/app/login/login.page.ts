@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
 import { NavController } from '@ionic/angular';
+import { GeneralService } from '../services/general.service';
 
 @Component({
   selector: 'app-login',
@@ -11,36 +12,47 @@ import { NavController } from '@ionic/angular';
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private loginService: LoginService, private navCtrl: NavController) {
+  constructor(private fb: FormBuilder, private generalService: GeneralService , private navCtrl: NavController) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      pass: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      pass: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   onLogin() {
-    console.log('Login form', this.loginForm.value);
-      this.navCtrl.navigateForward('/inicio');
-    
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.loginService.validateLogin(email, password).subscribe((response) => {
-        // Manejar la respuesta
-        if (response.valid) {
-          console.log('Login successful');
-          // Redirigir o realizar alguna acción
-        } else {
-          console.log('Invalid credentials');
-          // Mostrar mensaje de error
+    const email = this.loginForm.get('email')?.value;
+    const pass = this.loginForm.get('pass')?.value;
+
+    // Validación para 'admin', 'admin'
+    if (email === 'admin' && pass === 'admin') {
+      // Redirigir al Home directamente si es admin
+      this.navCtrl.navigateRoot('/inicio');
+    } else {
+      // Realizar la solicitud al backend si no es admin
+      const body = {
+        email: email,
+        pass: pass
+      };
+
+      this.generalService.post('api/auth/login', body).subscribe(
+        (response) => {
+          // Redirigir al Home si el login es exitoso
+          console.log('Login exitoso:', response);
+          this.navCtrl.navigateRoot('/inicio');
+        },
+        (error) => {
+          // Manejar el error en caso de que las credenciales sean incorrectas
+          console.error('Error en el login:', error);
+          alert('Credenciales incorrectas');
         }
-      });
+      );
     }
   }
 }
