@@ -17,6 +17,7 @@ public class PersonController {
     @Autowired
     private UserService userService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/login")
     public ResponseEntity<Boolean> login(@RequestBody LoginRequest loginRequest) {
         Optional<Person> user = userService.login(loginRequest.getEmail(), loginRequest.getPass());
@@ -28,6 +29,7 @@ public class PersonController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody Person user) {
         try {
