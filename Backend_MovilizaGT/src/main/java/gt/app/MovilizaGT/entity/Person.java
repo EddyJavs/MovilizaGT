@@ -1,5 +1,6 @@
 package gt.app.MovilizaGT.entity;
 import lombok.Data;
+import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
