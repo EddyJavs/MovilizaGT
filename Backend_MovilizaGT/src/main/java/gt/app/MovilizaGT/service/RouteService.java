@@ -1,16 +1,18 @@
 package gt.app.MovilizaGT.service;
 
+import gt.app.MovilizaGT.Utils.Response.RegisterResponse;
+import gt.app.MovilizaGT.Utils.Response.RouteResponse;
+import gt.app.MovilizaGT.entity.Person;
 import gt.app.MovilizaGT.entity.Route;
 import gt.app.MovilizaGT.entity.Stand;
 import gt.app.MovilizaGT.repository.RouteRepository;
 import gt.app.MovilizaGT.repository.StandRepository;
 import gt.app.MovilizaGT.Utils.Request.CreateRouteRequest;
 import gt.app.MovilizaGT.Utils.Request.CreateStandRequest;
+import gt.app.MovilizaGT.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Coordinate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,46 +20,52 @@ import java.util.List;
 public class RouteService {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private RouteRepository routeRepository;
 
     @Autowired
     private StandRepository standRepository;
 
-    // Instancia de GeometryFactory para crear objetos Point
-    private final GeometryFactory geometryFactory = new GeometryFactory();
-
-    public boolean createRoute(CreateRouteRequest routeRequest) {
+    @Transactional
+    public RouteResponse createRoute(CreateRouteRequest routeRequest) {
         try {
-            // Crea una nueva ruta
+            // Buscar la persona (conductor) por el ID
+            Person person = userRepository.findById(routeRequest.getFK_userId())
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+            // Crear la nueva ruta
             Route newRoute = new Route();
             newRoute.setDepartureTime(routeRequest.getDepartureTime());
             newRoute.setDepartureDate(routeRequest.getDepartureDate());
             newRoute.setAvailableSeats(routeRequest.getAvailableSeats());
-            newRoute.setFK_userId(routeRequest.getFK_userId());
 
-            // Guarda la ruta en la base de datos
-            Route savedRoute = routeRepository.save(newRoute);
+            // Asignar la persona (conductor)
+            newRoute.setPerson(person);
+
+            // Guardar la ruta
+            Route r = routeRepository.save(newRoute);
 
             // Ahora, guarda las paradas intermedias (stand)
             List<CreateStandRequest> stands = routeRequest.getStands();
             for (CreateStandRequest standRequest : stands) {
-                // Crea un objeto Point a partir de las coordenadas
-                Point stopPoint = geometryFactory.createPoint(new Coordinate(standRequest.getLongitude(), standRequest.getLatitude()));
-
-                Stand newStand = new Stand();
-                newStand.setStopPoint(stopPoint);
-                newStand.setCorrelative(standRequest.getCorrelative());
-                newStand.setDepartureTime(standRequest.getDepartureTime());
-                newStand.setFK_routeId(savedRoute.getRouteId());
-
                 // Guarda cada parada en la base de datos
-                standRepository.save(newStand);
+                standRepository.saveStand(standRequest.getLatitude(),standRequest.getLongitude(),
+                        standRequest.getCorrelative(),standRequest.getDepartureTime(),r.getRouteId());
             }
+            RouteResponse resp = new RouteResponse();
+            resp.setMessage("Ruta Creada con Exito");
+            resp.setSuccess(true);
+            return resp;
 
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            RouteResponse resp = new RouteResponse();
+            resp.setMessage("Ruta No Creada");
+            resp.setSuccess(false);
+            return resp;
         }
     }
+
 }

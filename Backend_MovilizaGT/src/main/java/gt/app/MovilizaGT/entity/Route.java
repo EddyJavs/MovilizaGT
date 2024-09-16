@@ -1,8 +1,10 @@
 package gt.app.MovilizaGT.entity;
+
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Time;
+import java.sql.Date;
 
 @Entity
 @Table(name = "route")
@@ -10,20 +12,19 @@ import java.time.LocalDateTime;
 public class Route {
 
     @Id
-    @Column(name = "routeId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer routeId;
 
     @Column(name = "departureTime")
-    private String departureTime;
+    private Time departureTime;  // Cambiado a java.sql.Time
 
     @Column(name = "departureDate")
-    private String departureDate;
+    private Date departureDate;  // Cambiado a java.sql.Date
 
     @Column(name = "availableSeats")
     private Integer availableSeats;
 
-    @Column(name = "FK_userId")
-    private Integer FK_userId;
-
+    @ManyToOne  // Definimos la relación con Person
+    @JoinColumn(name = "FK_userId", referencedColumnName = "userId")  // Se mapea FK_userId con userId de Person
+    private Person person;  // Aquí referenciamos a la entidad Person
 }

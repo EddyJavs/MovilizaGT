@@ -1,10 +1,9 @@
 package gt.app.MovilizaGT.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.Type;
-import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
+import java.sql.Time;
 
 @Entity
 @Table(name = "stand")
@@ -15,16 +14,16 @@ public class Stand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer standId;
 
-    @Column(name = "stopPoint", columnDefinition = "POINT")
-    @Type(type = "org.hibernate.spatial.GeometryType")
-    private Point stopPoint; // Usamos Point de JTS
+    @Column(name = "stopPoint")
+    private String stopPoint;
 
     @Column(name = "correlative")
     private Integer correlative;
 
     @Column(name = "departureTime")
-    private String departureTime;
+    private Time departureTime;
 
-    @Column(name = "FK_routeId")
-    private Integer FK_routeId;
+    @ManyToOne
+    @JoinColumn(name = "FK_routeId", referencedColumnName = "routeId")
+    private Route route;
 }

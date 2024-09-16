@@ -55,12 +55,6 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<!-- Dependencia para Hibernate Spatial -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-spatial</artifactId>
-			<version>5.6.15.Final</version> <!-- Hibernate Spatial compatible con Hibernate 5.6.x -->
-		</dependency>
 
 		<!-- Dependencia para JTS (Java Topology Suite) para manejar tipos de datos espaciales -->
 		<dependency>

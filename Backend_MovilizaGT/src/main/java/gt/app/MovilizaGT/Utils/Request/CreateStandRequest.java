@@ -2,10 +2,13 @@ package gt.app.MovilizaGT.Utils.Request;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.sql.Time;
+
 @Data
 public class CreateStandRequest {
-    private double latitude;   // Latitud
-    private double longitude;  // Longitud
+    private double latitude;
+    private double longitude;
     private Integer correlative;
-    private String departureTime;
+    private Time departureTime;
 }
