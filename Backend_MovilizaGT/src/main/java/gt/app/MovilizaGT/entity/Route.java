@@ -16,15 +16,15 @@ public class Route {
     private Integer routeId;
 
     @Column(name = "departureTime")
-    private Time departureTime;  // Cambiado a java.sql.Time
+    private Time departureTime;
 
     @Column(name = "departureDate")
-    private Date departureDate;  // Cambiado a java.sql.Date
+    private Date departureDate;
 
     @Column(name = "availableSeats")
     private Integer availableSeats;
 
-    @ManyToOne  // Definimos la relación con Person
-    @JoinColumn(name = "FK_userId", referencedColumnName = "userId")  // Se mapea FK_userId con userId de Person
-    private Person person;  // Aquí referenciamos a la entidad Person
+    @ManyToOne
+    @JoinColumn(name = "FK_userId", referencedColumnName = "userId")
+    private Person person;
 }
