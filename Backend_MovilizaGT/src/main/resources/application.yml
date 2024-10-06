@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://34.86.222.70:3306/movilizaGT
+    url: jdbc:mysql://34.21.34.227:3306/movilizaGT
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
