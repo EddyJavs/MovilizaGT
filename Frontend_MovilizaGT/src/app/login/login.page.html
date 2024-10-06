@@ -19,7 +19,7 @@
           <ion-label position="floating">Contraseña</ion-label>
           <ion-input formControlName="pass" type="password"></ion-input>
         </ion-item>
-        <ion-button expand="full" type="submit" [disabled]="!loginForm.valid">Login</ion-button>
+        <ion-button expand="full" type="submit" [disabled]="!isFormValid()">Login</ion-button>
       </form>
 
       <!-- Agregar el enlace para la página de registro -->

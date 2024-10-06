@@ -1,13 +1,20 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button> <!-- Botón de regreso -->
+      <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Crear Rutas</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+  <app-notification 
+    [message]="notificationMessage" 
+    [type]="notificationType" 
+    [isVisible]="isNotificationVisible">
+  </app-notification>
+  
+
   <form [formGroup]="routeForm">
     <ion-item>
       <ion-label position="floating">Hora de Salida</ion-label>
@@ -16,27 +23,44 @@
 
     <ion-item>
       <ion-label position="floating">Fecha</ion-label>
-      <ion-datetime formControlName="startDate" displayFormat="DD/MM/YYYY" placeholder="Selecciona la fecha"></ion-datetime>
+      <ion-input [value]="selectedDate | date: 'dd/MM/yyyy'" readonly="true" (click)="openDatePicker()">
+      </ion-input>
     </ion-item>
+    
+    <!-- Modal para el selector de fecha -->
+    <ion-modal [isOpen]="isDatePickerOpen">
+      <ng-template>
+        <ion-content>
+          <ion-datetime [value]="selectedDate" displayFormat="DD/MM/YYYY" (ionChange)="onDateSelected($event)"
+            (ionCancel)="closeDatePicker()" presentation="date">
+          </ion-datetime>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
 
     <ion-item>
       <ion-label position="floating">Asientos disponibles</ion-label>
-      <ion-input formControlName="availableSeats" type="number" min="1" placeholder="¿Cuántos asientos tienes libres?"></ion-input>
+      <ion-input formControlName="availableSeats" type="number" min="1"
+        placeholder="¿Cuántos asientos tienes libres?"></ion-input>
     </ion-item>
 
+    <!-- Campo para agregar puntos -->
     <ion-item>
-      <ion-label position="floating">Lugar de origen</ion-label>
-      <ion-input formControlName="startLocation" type="text" placeholder="Selecciona el punto de origen" #originInput></ion-input>
+      <ion-label position="floating">Agregar Punto de Parada</ion-label>
+      <ion-input formControlName="waypoint" type="text" #waypointInput placeholder="Selecciona un punto"></ion-input>
     </ion-item>
-    
-    <ion-item>
-      <ion-label position="floating">Lugar de destino</ion-label>
-      <ion-input formControlName="endLocation" type="text" placeholder="Selecciona el punto de destino" #destinationInput></ion-input>
-    </ion-item>
-
+    <!-- Botón para limpiar el mapa -->
+    <ion-button expand="full" color="danger" (click)="clearMap()">Limpiar Mapa</ion-button>
     <!-- Contenedor del mapa -->
     <div id="map" style="height: 400px; width: 100%;"></div>
     <br>
-    <ion-button expand="full" type="submit" (click)="onCreateRoute()">Crear Ruta</ion-button>
+    
+    
+    <!-- Botón para crear la ruta -->
+    <ion-button expand="full" type="button" (click)="onCreateRoute()">Crear Ruta</ion-button>
   </form>
+  <ion-button expand="full" color="primary" (click)="testNotification()">
+    Probar Notificación
+  </ion-button>
 </ion-content>

@@ -55,4 +55,17 @@ export class LoginPage implements OnInit {
       );
     }
   }
+
+  isFormValid(): boolean {
+    const email = this.loginForm.get('email')?.value;
+    const pass = this.loginForm.get('pass')?.value;
+  
+    // Si las credenciales son admin/admin, habilitar el botón
+    if (email === 'admin' && pass === 'admin') {
+      return true;
+    }
+  
+    // Para el resto, solo habilitar si el formulario es válido
+    return this.loginForm.valid;
+  }
 }

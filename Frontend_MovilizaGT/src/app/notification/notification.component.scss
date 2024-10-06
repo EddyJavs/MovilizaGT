@@ -1,0 +1,42 @@
+.notification {
+    position: fixed; /* Se mantiene fija en la pantalla */
+    top: 50px; /* Aumentamos el margen superior para que no quede fuera de la vista */
+    left: 50%; /* Centrada horizontalmente */
+    transform: translateX(-50%); /* Centrado horizontalmente */
+    z-index: 9999; /* Asegura que esté por encima de todo el contenido */
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente */
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 300px; /* Ancho mínimo para la notificación */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para efecto flotante */
+  }
+  
+  .success {
+    background-color: #28a745; /* Verde para éxito */
+  }
+  
+  .error {
+    background-color: #dc3545; /* Rojo para error */
+  }
+  
+  .warning {
+    background-color: #ffc107; /* Amarillo para advertencias */
+    color: #000; /* Texto negro para mejor legibilidad */
+  }
+  
+  .info {
+    background-color: #17a2b8; /* Azul para información */
+  }
+  
+  button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

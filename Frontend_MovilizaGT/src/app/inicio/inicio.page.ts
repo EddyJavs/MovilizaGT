@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -7,7 +8,23 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage {
-  constructor(private navCtrl: NavController) {}
+  constructor(private navCtrl: NavController, private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    // Verificar si hay parámetros de notificación
+    this.route.queryParams.subscribe(params => {
+      if (params['notificationMessage']) {
+        this.notificationMessage = params['notificationMessage'];
+        this.notificationType = params['notificationType'];
+        this.isNotificationVisible = true;
+
+        // Ocultar la notificación después de 3 segundos
+        setTimeout(() => {
+          this.isNotificationVisible = false;
+        }, 3000);
+      }
+    });
+  }
 
   goToCreateRoute() {
     this.navCtrl.navigateForward('/create-route'); // Navega a la página para crear una nueva ruta
@@ -27,5 +44,20 @@ export class InicioPage {
 
   goToRateTrip() {
     this.navCtrl.navigateForward('/rate-trip'); // Navega a la página para calificar un viaje
+  }
+
+  notificationMessage: string = '';
+  notificationType: 'success' | 'error' | 'warning' | 'info'='info' ;
+  isNotificationVisible: boolean = false;  // Agrega esta propiedad
+
+  showNotification(message: string, type: 'success' | 'error' | 'info' | 'warning'): void {
+    this.notificationMessage = message;
+    this.notificationType = type;
+    this.isNotificationVisible = true;
+  
+    // Opción para cerrar automáticamente la notificación después de 3 segundos
+    setTimeout(() => {
+      this.isNotificationVisible = false;
+    }, 3000);  // 3 segundos
   }
 }
