@@ -8,6 +8,11 @@
 </ion-header>
 
 <ion-content id="main-content">
+  <app-notification 
+    [message]="notificationMessage" 
+    [type]="notificationType" 
+    [isVisible]="isNotificationVisible">
+  </app-notification>
   <ion-grid>
     <ion-row>
       <!-- Tarjeta para Conductor -->

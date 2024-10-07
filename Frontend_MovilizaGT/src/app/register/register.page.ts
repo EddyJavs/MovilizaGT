@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GeneralService } from '../services/general.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +13,7 @@ export class RegisterPage implements OnInit {
   passwordStrengthText: string = '';
   passwordStrengthColor: string = 'medium';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private generalService: GeneralService, private navCtrl: NavController) {
     this.registerForm = this.fb.group({
       fullName: ['', Validators.required],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{8,10}$')]],
@@ -19,9 +21,10 @@ export class RegisterPage implements OnInit {
       dpi: ['', Validators.required],
       gender: ['', Validators.required],
       age: ['', [Validators.required, Validators.min(18)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      pass: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
     }, { validator: this.passwordMatchValidator });
+
   }
 
   ngOnInit() {
@@ -32,21 +35,22 @@ export class RegisterPage implements OnInit {
       dpi: ['', Validators.required],
       gender: ['', Validators.required],
       age: ['', [Validators.required, Validators.min(18)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      pass: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
     }, { validator: this.passwordMatchValidator });
   }
 
   // Validador para asegurarse de que las contraseñas coincidan
   passwordMatchValidator(form: FormGroup) {
-    const password = form.get('password')?.value || '';
+    console.log(form);
+    const password = form.get('pass')?.value || '';
     const confirmPassword = form.get('confirmPassword')?.value || '';
     return password === confirmPassword ? null : { mismatch: true };
   }
 
   checkPasswordStrength() {
-    const password = this.registerForm.get('password')?.value || '';
-
+    const password = this.registerForm.get('pass')?.value || '';
+    console.log(password);
     if (password.length < 6) {
       this.passwordStrengthText = 'Débil';
       this.passwordStrengthColor = 'danger';
@@ -62,8 +66,23 @@ export class RegisterPage implements OnInit {
   onRegister() {
     if (this.registerForm.valid) {
       console.log(this.registerForm.value);
-      // Aquí puedes añadir la lógica para manejar el registro del usuario
+      const formData = this.registerForm.value;
+
+      // Usamos el servicio general para enviar los datos al backend
+      this.generalService.post<any>('api/auth/register', formData).subscribe({
+        next: (response) => {
+          console.log('Registro exitoso', response);
+          // Redirigir a otra página después del registro exitoso
+          this.navCtrl.navigateRoot('/login');
+        },
+        error: (err) => {
+          console.error('Error en el registro', err);
+        }
+      });
+    } else {
+      console.log('Formulario inválido');
     }
+
   }
 
   uploadLicenseFront() {
