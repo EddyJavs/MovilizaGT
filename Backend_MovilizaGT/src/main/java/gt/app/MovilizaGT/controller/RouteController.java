@@ -36,6 +36,7 @@ public class RouteController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/searchRoutes")
     public ResponseEntity<?> searchRoutes(@RequestParam double latitudInicio,
                                           @RequestParam double longitudInicio,
