@@ -1,0 +1,26 @@
+<ion-content class="ion-padding">
+  <ion-list *ngIf="routes.length > 0">
+    <ion-item *ngFor="let route of routes; let i = index">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Ruta de {{ route.driverName }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Fecha:</strong> {{ route.departureDate }} - <strong>Hora:</strong> {{ route.departureTime }}</p>
+          <p><strong>Vehículo:</strong> {{ route.vehicleBrand }} {{ route.vehicleLine }} ({{ route.vehicleModel }})</p>
+          <p><strong>Asientos disponibles:</strong> {{ route.availableSeats }}</p>
+          <p><strong>Desde:</strong> {{ route.startLocation }}</p>
+          <p><strong>Hasta:</strong> {{ route.endLocation }}</p>
+
+          <!-- Mapa para la ruta -->
+          <div id="map-{{i}}" style="height: 200px;"></div>
+
+          <!-- Botón para solicitar la ruta -->
+          <ion-button expand="full" color="primary">Solicitar Viaje</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+  <ion-label *ngIf="routes.length === 0">No se encontraron rutas.</ion-label>
+</ion-content>

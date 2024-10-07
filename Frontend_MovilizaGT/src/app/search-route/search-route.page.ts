@@ -176,7 +176,7 @@ export class SearchRoutePage implements AfterViewInit {
           console.log('Rutas encontradas:', response);
           if (response.length > 0) {
             // Redirigir a la página de resultados si se encontraron rutas
-            this.navCtrl.navigateForward('/results', {
+            this.navCtrl.navigateForward('/search-results', {
               queryParams: {
                 routes: JSON.stringify(response),  // Pasar las rutas como parámetro
               }
