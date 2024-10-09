@@ -24,7 +24,7 @@ public class RouteController {
     @Autowired
     private RouteService routeService;
 
-    // Endpoint para crear una ruta
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/createRoute")
     public ResponseEntity<RouteResponse> createRoute(@RequestBody CreateRouteRequest route) {
         try {
@@ -36,6 +36,7 @@ public class RouteController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/searchRoutes")
     public ResponseEntity<?> searchRoutes(@RequestParam double latitudInicio,
                                           @RequestParam double longitudInicio,

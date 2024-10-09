@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Buscar Rutas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Mostrar notificación -->
+  <app-notification *ngIf="notificationMessage" [message]="notificationMessage" [type]="notificationType"></app-notification>
+
+  <!-- Formulario de búsqueda -->
+  <form [formGroup]="searchForm">
+    <ion-item>
+      <ion-label position="floating">Punto de Origen</ion-label>
+      <ion-input formControlName="startLocation" type="text" #originInput></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Punto de Destino</ion-label>
+      <ion-input formControlName="endLocation" type="text" #destinationInput></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Fecha</ion-label>
+      <ion-input formControlName="startDate" type="date"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Hora</ion-label>
+      <ion-input formControlName="startTime" type="time"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" (click)="onSearchRoute()">Buscar Ruta</ion-button>
+  </form>
+
+  <!-- Mostrar mapa solo cuando ambos puntos estén seleccionados -->
+  <div *ngIf="showMap">
+    <div id="map" style="height: 400px; width: 100%;"></div>
+  </div>
+</ion-content>

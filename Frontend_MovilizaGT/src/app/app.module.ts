@@ -11,7 +11,7 @@ import { GeneralService } from './services/general.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [AppComponent
+  declarations: [AppComponent  
     // mas componentes se agregan aquí
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,FormsModule, ReactiveFormsModule, HttpClientModule],

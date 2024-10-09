@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://dev-api.tu-api.com',
+  apiUrl: 'http://localhost:8080',
   otherConfig: 'devValue',
 };
 

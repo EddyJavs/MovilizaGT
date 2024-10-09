@@ -1,0 +1,27 @@
+ion-content {
+    background-color: #1e1e1e;  // Cambia el fondo a un gris oscuro para mayor contraste
+  }
+  
+  ion-card {
+    background-color: #6c6b6b;  // Color de fondo de la tarjeta
+    border-radius: 10px;        // Esquinas redondeadas para un mejor diseño
+    color: white;               // Texto blanco para mayor contraste con el fondo
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);  // Agregar una sombra para resaltar la tarjeta
+  }
+  
+  ion-card-header, ion-card-title, ion-card-content {
+    color: white;  // Asegurarse de que el texto en la tarjeta sea blanco
+  }
+  
+  .route-map {
+    border-radius: 5px;
+    overflow: hidden;  // Evitar que el mapa sobresalga de la tarjeta
+    margin-top: 10px;  // Un poco de espacio entre el contenido y el mapa
+  }
+  
+  ion-button {
+    margin-top: 15px;  // Espacio entre el botón y el contenido
+    background-color: #ff9900;  // Color de botón más llamativo
+    color: white;               // Texto blanco en el botón
+  }
+  
