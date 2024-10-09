@@ -32,6 +32,8 @@ public class TripService {
             Route route = routeRepository.findById(trip.getRoute().getRouteId())
                     .orElseThrow(() -> new IllegalArgumentException("La ruta no existe"));
 
+            System.out.println("Ruta encontrada: " + route.getRouteId());
+
             if (trip.getNeededSeats() > route.getAvailableSeats()) {
                 throw new IllegalArgumentException("Los asientos requeridos superan los asientos disponibles.");
             }
@@ -45,7 +47,10 @@ public class TripService {
             trip.setStatusTrip("pendiente");       // Estado inicial pendiente
             trip.setAcceptedAt(LocalDateTime.of(1970, 1, 1, 0, 0, 0));  // Fecha inicial no aceptado
 
+            System.out.println("Trip ready to save: " + trip);
+
             Trip savedTrip = tripRepository.save(trip);
+            System.out.println("Trip guardado correctamente");
             return savedTrip;
         } catch (Exception e) {
             // Log detallado del error

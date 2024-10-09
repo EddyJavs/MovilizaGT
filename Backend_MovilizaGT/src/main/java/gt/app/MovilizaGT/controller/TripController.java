@@ -41,8 +41,22 @@ public class TripController {
             trip.setStartPoints((String) tripData.get("startPoints"));
             trip.setEndPoints((String) tripData.get("endPoints"));
             trip.setNeededSeats((Integer) tripData.get("neededSeats"));
-            trip.setTripStart(LocalDateTime.parse((String) tripData.get("tripStart")));
-            trip.setTripEnd(LocalDateTime.parse((String) tripData.get("tripEnd")));
+
+            // Validamos los campos tripStart y tripEnd antes de procesar
+            String tripStartStr = (String) tripData.get("tripStart");
+            String tripEndStr = (String) tripData.get("tripEnd");
+
+            if (tripStartStr == null || tripEndStr == null) {
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Faltan las fechas de inicio o fin del viaje"));
+            }
+
+            try {
+                trip.setTripStart(LocalDateTime.parse(tripStartStr));
+                trip.setTripEnd(LocalDateTime.parse(tripEndStr));
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Formato incorrecto en tripStart o tripEnd"));
+            }
+
             trip.setUser(user);
             trip.setRoute(route);
 
@@ -51,6 +65,8 @@ public class TripController {
             return ResponseEntity.ok(createdTrip);
 
         } catch (Exception e) {
+            // Imprimir el stack trace para mayor detalle
+            e.printStackTrace();
             return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error interno del servidor: " + e.getMessage()));
         }
     }
