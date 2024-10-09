@@ -16,19 +16,19 @@ public class Trip {
     private Integer tripId;
 
     @Column(name = "agreedPrice", precision = 10, scale = 2)
-    private BigDecimal agreedPrice = BigDecimal.ZERO; // El valor inicial es 0
+    private BigDecimal agreedPrice = BigDecimal.ZERO;
 
     @Column(name = "startPoints")
-    private String startPoints;
+    private String startPoints; // Tratamos el punto como String
 
     @Column(name = "endPoints")
     private String endPoints;
 
     @Column(name = "statusTrip")
-    private String statusTrip = "pendiente"; // Inicialmente 'pendiente'
+    private String statusTrip = "pendiente";
 
     @Column(name = "acceptedAt")
-    private LocalDateTime acceptedAt = LocalDateTime.of(1970, 1, 1, 0, 0, 0); // Inicialmente no aceptado
+    private LocalDateTime acceptedAt = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
 
     @Column(name = "createdAt")
     private LocalDateTime createdAt = LocalDateTime.now();
