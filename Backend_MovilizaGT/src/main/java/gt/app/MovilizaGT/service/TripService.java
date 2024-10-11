@@ -1,5 +1,6 @@
 package gt.app.MovilizaGT.service;
 
+import gt.app.MovilizaGT.Utils.Response.TripResponse;
 import gt.app.MovilizaGT.entity.Person;
 import gt.app.MovilizaGT.entity.Route;
 import gt.app.MovilizaGT.entity.Trip;
@@ -26,37 +27,46 @@ public class TripService {
     private UserRepository userRepository;
 
     @Transactional
-    public Trip createTrip(Trip trip) throws Exception {
+    public TripResponse createTrip(Trip trip) throws Exception {
         try {
             // Verifica que el número de asientos requeridos sea menor o igual a los asientos disponibles en la ruta
             Route route = routeRepository.findById(trip.getRoute().getRouteId())
                     .orElseThrow(() -> new IllegalArgumentException("La ruta no existe"));
 
-            System.out.println("Ruta encontrada: " + route.getRouteId());
-
             if (trip.getNeededSeats() > route.getAvailableSeats()) {
-                throw new IllegalArgumentException("Los asientos requeridos superan los asientos disponibles.");
+                return new TripResponse(false, "Los asientos requeridos superan los asientos disponibles.");
             }
 
             // Reducir los asientos disponibles en la ruta
             route.setAvailableSeats(route.getAvailableSeats() - trip.getNeededSeats());
             routeRepository.save(route);
 
+            // Procesar las coordenadas de los puntos de inicio y fin
+            String[] startCoords = trip.getStartPoints().split(", ");
+            String[] endCoords = trip.getEndPoints().split(", ");
+
+            double startLat = Double.parseDouble(startCoords[0]);
+            double startLon = Double.parseDouble(startCoords[1]);
+            double endLat = Double.parseDouble(endCoords[0]);
+            double endLon = Double.parseDouble(endCoords[1]);
+
             // Establecer valores iniciales para el viaje
             trip.setAgreedPrice(BigDecimal.ZERO);  // Precio inicial 0
             trip.setStatusTrip("pendiente");       // Estado inicial pendiente
             trip.setAcceptedAt(LocalDateTime.of(1970, 1, 1, 0, 0, 0));  // Fecha inicial no aceptado
 
-            System.out.println("Trip ready to save: " + trip);
+            // Guardar el viaje con las coordenadas procesadas
+            tripRepository.saveTrip(startLat, startLon, endLat, endLon, trip.getAgreedPrice(),
+                    trip.getStatusTrip(), trip.getAcceptedAt(), trip.getCreatedAt(), trip.getNeededSeats(),
+                    trip.getTripStart(), trip.getTripEnd(), trip.getUser().getUserId(), trip.getRoute().getRouteId());
 
-            Trip savedTrip = tripRepository.save(trip);
-            System.out.println("Trip guardado correctamente");
-            return savedTrip;
+            return new TripResponse(true, "Viaje Solicitado con Exito");
+
         } catch (Exception e) {
             // Log detallado del error
             System.err.println("Error al crear el viaje: " + e.getMessage());
-            throw new Exception("Error al crear el viaje", e); // Lanzar el error con el mensaje original
+            e.printStackTrace();
+            return new TripResponse(false, "Error interno del servidor: " + e.getMessage());
         }
     }
-
 }
