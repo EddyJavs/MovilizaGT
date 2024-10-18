@@ -1,7 +1,6 @@
 package gt.app.MovilizaGT.service;
 
 import gt.app.MovilizaGT.Utils.Response.TripResponse;
-import gt.app.MovilizaGT.entity.Person;
 import gt.app.MovilizaGT.entity.Route;
 import gt.app.MovilizaGT.entity.Trip;
 import gt.app.MovilizaGT.repository.RouteRepository;
@@ -13,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Service
 public class TripService {
@@ -69,4 +70,10 @@ public class TripService {
             return new TripResponse(false, "Error interno del servidor: " + e.getMessage());
         }
     }
+
+    public List<Trip> getTripsByRouteCreator(Integer userIdCreator) {
+        return tripRepository.findTripsByRouteCreator(userIdCreator);
+    }
+
+
 }

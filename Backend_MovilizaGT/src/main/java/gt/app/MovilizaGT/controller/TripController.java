@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -69,4 +69,17 @@ public class TripController {
             return ResponseEntity.status(500).body(new TripResponse(false, "Error interno del servidor"));
         }
     }
+
+    @GetMapping("/tripsByRouteCreator")
+    public ResponseEntity<List<Trip>> getTripsByRouteCreator(@RequestParam Integer userIdCreator) {
+        try {
+            List<Trip> trips = tripService.getTripsByRouteCreator(userIdCreator);
+            return ResponseEntity.ok(trips);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+
+
 }
