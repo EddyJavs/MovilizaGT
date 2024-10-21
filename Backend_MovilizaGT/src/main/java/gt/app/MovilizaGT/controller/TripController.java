@@ -1,5 +1,6 @@
 package gt.app.MovilizaGT.controller;
 
+import gt.app.MovilizaGT.Utils.Response.TripResponse;
 import gt.app.MovilizaGT.entity.Person;
 import gt.app.MovilizaGT.entity.Route;
 import gt.app.MovilizaGT.entity.Trip;
@@ -9,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -21,13 +22,13 @@ public class TripController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/createTrip")
-    public ResponseEntity<?> createTrip(@RequestBody Map<String, Object> tripData) {
+    public ResponseEntity<TripResponse> createTrip(@RequestBody Map<String, Object> tripData) {
         try {
             Integer FK_userId = (Integer) tripData.get("FK_userId");
             Integer FK_routeId = (Integer) tripData.get("FK_routeId");
 
             if (FK_userId == null || FK_routeId == null) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Faltan FK_userId o FK_routeId"));
+                return ResponseEntity.badRequest().body(new TripResponse(false, "Faltan FK_userId o FK_routeId"));
             }
 
             Person user = new Person();
@@ -47,27 +48,38 @@ public class TripController {
             String tripEndStr = (String) tripData.get("tripEnd");
 
             if (tripStartStr == null || tripEndStr == null) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Faltan las fechas de inicio o fin del viaje"));
+                return ResponseEntity.badRequest().body(new TripResponse(false, "Faltan las fechas de inicio o fin del viaje"));
             }
 
             try {
                 trip.setTripStart(LocalDateTime.parse(tripStartStr));
                 trip.setTripEnd(LocalDateTime.parse(tripEndStr));
             } catch (Exception e) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Formato incorrecto en tripStart o tripEnd"));
+                return ResponseEntity.badRequest().body(new TripResponse(false, "Formato incorrecto en tripStart o tripEnd"));
             }
 
             trip.setUser(user);
             trip.setRoute(route);
 
             // Llamar al servicio para guardar el viaje
-            Trip createdTrip = tripService.createTrip(trip);
-            return ResponseEntity.ok(createdTrip);
+            TripResponse response = tripService.createTrip(trip);
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            // Imprimir el stack trace para mayor detalle
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(Collections.singletonMap("error", "Error interno del servidor: " + e.getMessage()));
+            return ResponseEntity.status(500).body(new TripResponse(false, "Error interno del servidor"));
         }
     }
+
+    @GetMapping("/tripsByRouteCreator")
+    public ResponseEntity<List<Trip>> getTripsByRouteCreator(@RequestParam Integer userIdCreator) {
+        try {
+            List<Trip> trips = tripService.getTripsByRouteCreator(userIdCreator);
+            return ResponseEntity.ok(trips);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+
+
 }

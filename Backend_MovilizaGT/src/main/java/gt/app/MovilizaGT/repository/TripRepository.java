@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Integer> {
@@ -31,4 +32,13 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
                   @Param("tripEnd") LocalDateTime tripEnd,
                   @Param("userId") int userId,
                   @Param("routeId") int routeId);
+
+
+    @Query(value = "SELECT t.* FROM trip t " +
+            "JOIN route r ON t.FK_routeId = r.routeId " +
+            "WHERE r.FK_userId = :userIdCreator", nativeQuery = true)
+    List<Trip> findTripsByRouteCreator(@Param("userIdCreator") Integer userIdCreator);
+
+
+
 }

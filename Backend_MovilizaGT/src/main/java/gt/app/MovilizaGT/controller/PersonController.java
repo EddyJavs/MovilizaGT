@@ -19,13 +19,15 @@ public class PersonController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Optional<Person> user = userService.login(loginRequest.getEmail(), loginRequest.getPass());
 
         if (user.isPresent()) {
-            return ResponseEntity.ok(true);
+            Person person = user.get();
+            //System.out.println(person.toString());
+            return ResponseEntity.ok(person);
         } else {
-            return ResponseEntity.status(401).body(false);
+            return ResponseEntity.status(401).body("Usuario o contraseña incorrectos.");
         }
     }
 
