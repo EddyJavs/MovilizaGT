@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonInput } from '@ionic/angular';
 import { IonDatetime } from '@ionic/angular';
@@ -7,12 +7,14 @@ import { NavController } from '@ionic/angular';
 
 declare var google: any;
 
+
 @Component({
   selector: 'app-create-route',
   templateUrl: './create-route.page.html',
   styleUrls: ['./create-route.page.scss'],
 })
-export class CreateRoutePage implements AfterViewInit {
+export class CreateRoutePage implements AfterViewInit, OnInit {
+  userId: number | null = null;
   routeForm: FormGroup;
   private map: any;
   private markers: any[] = [];  // Lista de marcadores (puntos intermedios)
@@ -42,6 +44,15 @@ export class CreateRoutePage implements AfterViewInit {
     this.initMap();
     this.initAutocomplete();
     this.directionsRenderer.setMap(this.map);
+  }
+
+  ngOnInit() {
+    const userData = sessionStorage.getItem('userData');
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      this.userId = parsedUserData.userId;
+      console.log('User ID:', this.userId);
+    }
   }
 
   notificationMessage: string = '';
@@ -218,12 +229,12 @@ export class CreateRoutePage implements AfterViewInit {
       const formattedDate = new Date(startDate).toISOString().split('T')[0];  // Asegurar el formato yyyy-mm-dd
 
       console.log(this.markers);
-
+      console.log('USER ID', this.userId);
       const routeData = {
         departureTime: formattedTime,
         departureDate: formattedDate,
         availableSeats: this.routeForm.get('availableSeats')?.value,
-        FK_userId: 1,  // Debes cambiar este valor según el usuario autenticado
+        FK_userId: this.userId,  // Debes cambiar este valor según el usuario autenticado
         stands: this.markers.map((markerObj, index) => ({
           latitude: markerObj.location.lat(),
           longitude: markerObj.location.lng(),

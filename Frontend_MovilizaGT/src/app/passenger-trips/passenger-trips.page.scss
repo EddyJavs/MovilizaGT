@@ -1,0 +1,54 @@
+ion-content {
+    background-color: #f2f2f2;  // Color de fondo suave para un buen contraste
+  
+    .ion-list {
+      margin-bottom: 1rem;
+    }
+  
+    ion-card {
+      background-color: #3d3d4c;  // Fondo oscuro para el contraste
+      color: #ffffff;  // Texto blanco
+      border-radius: 12px;  // Bordes redondeados
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  // Sombra para dar profundidad
+      margin: 10px;
+      padding: 10px;
+      
+      ion-card-header {
+        background-color: #232329;  // Un tono más oscuro para el encabezado
+        border-radius: 12px 12px 0 0;
+        padding: 12px;
+      }
+  
+      ion-card-title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #f5f3f0;  // Color dorado para resaltar el título
+      }
+  
+      ion-card-content {
+        font-size: 1rem;
+        color: #e0e0e0;  // Texto un poco más claro
+        padding: 8px 12px;
+        line-height: 1.5;
+  
+        p {
+          margin: 5px 0;
+        }
+  
+        strong {
+          color: #e8e7e3;  // Color dorado para títulos de las propiedades
+          font-weight: bold;
+        }
+      }
+    }
+  
+    .ion-label {
+      color: #a9a9a9;  // Texto más claro cuando no hay resultados
+      font-size: 1.2rem;
+      text-align: center;
+      margin-top: 20px;
+    }
+  
+    
+  }
+  

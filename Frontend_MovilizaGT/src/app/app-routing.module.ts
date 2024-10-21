@@ -30,9 +30,18 @@ const routes: Routes = [
   {
     path: 'search-route',
     loadChildren: () => import('./search-route/search-route.module').then( m => m.SearchRoutePageModule)
-  },  {
+  },
+  {
     path: 'search-results',
     loadChildren: () => import('./search-results/search-results.module').then( m => m.SearchResultsPageModule)
+  },
+  {
+    path: 'passenger-trips',
+    loadChildren: () => import('./passenger-trips/passenger-trips.module').then( m => m.PassengerTripsPageModule)
+  },
+  {
+    path: 'conductor-trips',
+    loadChildren: () => import('./conductor-trips/conductor-trips.module').then( m => m.ConductorTripsPageModule)
   }
 
 ];

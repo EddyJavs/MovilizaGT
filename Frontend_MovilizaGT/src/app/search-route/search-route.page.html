@@ -8,9 +8,13 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <app-notification 
+    [message]="notificationMessage" 
+    [type]="notificationType" 
+    [isVisible]="isNotificationVisible">
+  </app-notification>
   <!-- Mostrar notificación -->
-  <app-notification *ngIf="notificationMessage" [message]="notificationMessage" [type]="notificationType"></app-notification>
-
+  
   <!-- Formulario de búsqueda -->
   <form [formGroup]="searchForm">
     <ion-item>

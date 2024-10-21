@@ -4,10 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SearchResultsPageRoutingModule } from './search-results-routing.module';
+import { PassengerTripsPageRoutingModule } from './passenger-trips-routing.module';
 
-import { SearchResultsPage } from './search-results.page';
-
+import { PassengerTripsPage } from './passenger-trips.page';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -15,9 +14,9 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    SearchResultsPageRoutingModule,
+    PassengerTripsPageRoutingModule,
     SharedModule
   ],
-  declarations: [SearchResultsPage]
+  declarations: [PassengerTripsPage]
 })
-export class SearchResultsPageModule {}
+export class PassengerTripsPageModule {}
