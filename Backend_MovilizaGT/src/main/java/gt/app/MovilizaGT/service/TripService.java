@@ -74,6 +74,10 @@ public class TripService {
         }
     }
 
+    public List<Trip> getTripsByTripCreatorAndStatus(Integer userIdCreator, String statusTrip) {
+        return tripRepository.findTripsByTripCreatorAndStatus(userIdCreator, statusTrip);
+    }
+
     public List<Trip> getTripsByRouteCreatorAndStatus(Integer userIdCreator, String statusTrip) {
         return tripRepository.findTripsByRouteCreatorAndStatus(userIdCreator, statusTrip);
     }

@@ -72,6 +72,20 @@ public class TripController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/tripsByTripCreator")
+    public ResponseEntity<List<Trip>> getTripsByTripCreatorAndStatus(
+            @RequestParam Integer userIdCreator,
+            @RequestParam String statusTrip) {
+        try {
+            List<Trip> trips = tripService.getTripsByTripCreatorAndStatus(userIdCreator, statusTrip);
+            return ResponseEntity.ok(trips);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/tripsByRouteCreator")
     public ResponseEntity<List<Trip>> getTripsByRouteCreatorAndStatus(
             @RequestParam Integer userIdCreator,
@@ -83,6 +97,8 @@ public class TripController {
             return ResponseEntity.status(500).body(null);
         }
     }
+
+
 
 
     @CrossOrigin(origins = "http://localhost:4200")
