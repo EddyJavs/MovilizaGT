@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mis Viajes Solicitados</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Filtro por estado del viaje -->
+  <ion-item>
+    <ion-label>Filtrar por Estado</ion-label>
+    <ion-select [(ngModel)]="statusTrip" (ionChange)="onStatusChange()">
+      <ion-select-option value="pendiente">Pendiente</ion-select-option>
+      <ion-select-option value="aceptado">Aceptado</ion-select-option>
+      <ion-select-option value="rechazado">Rechazado</ion-select-option>
+      <!-- Puedes agregar más opciones de estado aquí -->
+    </ion-select>
+  </ion-item>
+
+  <!-- Listado de viajes solicitados -->
+  <ion-list *ngIf="trips.length > 0">
+    <ion-item *ngFor="let trip of trips">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Viaje a {{ trip.route.person.fullName }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Estado:</strong> {{ trip.statusTrip }}</p>
+          <p><strong>Asientos solicitados:</strong> {{ trip.neededSeats }}</p>
+          <p><strong>Hora de salida:</strong> {{ trip.tripStart | date: 'short' }}</p>
+          <p><strong>Conductor:</strong> {{ trip.route.person.fullName }}</p>
+          <p><strong>Fecha del viaje:</strong> {{ trip.route.departureDate }}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+  <ion-label *ngIf="trips.length === 0">No se encontraron viajes.</ion-label>
+</ion-content>

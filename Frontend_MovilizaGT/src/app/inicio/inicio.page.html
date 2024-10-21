@@ -58,18 +58,15 @@
   </ion-header>
   <ion-content>
     <ion-list>
-      <ion-item button (click)="goToPreviousTrips()">
+      <ion-item button (click)="goToConductorTrips()">
         <ion-icon slot="start" name="time-outline"></ion-icon>
-        Ver mis viajes anteriores
+        Mis viajes como conductor
       </ion-item>
-      <ion-item button (click)="goToProfile()">
-        <ion-icon slot="start" name="person-circle-outline"></ion-icon>
-        Completar información de mi perfil
+      <ion-item button (click)="goToConductorTrips()">
+        <ion-icon slot="start" name="time-outline"></ion-icon>
+        Mis viajes como pasajero
       </ion-item>
-      <ion-item button (click)="goToRateTrip()">
-        <ion-icon slot="start" name="star-outline"></ion-icon>
-        Calificar viaje
-      </ion-item>
+      
       <!-- Puedes agregar más opciones aquí -->
     </ion-list>
   </ion-content>

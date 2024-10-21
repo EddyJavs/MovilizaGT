@@ -43,6 +43,10 @@ export class LoginPage implements OnInit {
 
       this.generalService.post('api/auth/login', body).subscribe(
         (response) => {
+          // Guarda los datos del usuario en sessionStorage
+          sessionStorage.setItem('userData', JSON.stringify(response));
+          // verifico que se guarden los datos del usuario
+          console.log('Datos del usuario:', sessionStorage.getItem('userData'));
           // Redirigir al Home si el login es exitoso
           console.log('Login exitoso:', response);
           this.navCtrl.navigateRoot('/inicio');

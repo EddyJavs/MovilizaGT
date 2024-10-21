@@ -1,3 +1,8 @@
 <ion-app>
+  <app-notification 
+  [message]="notificationMessage" 
+  [type]="notificationType" 
+  [isVisible]="isNotificationVisible">
+</app-notification>
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

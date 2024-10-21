@@ -25,7 +25,6 @@ export class NotificationComponent implements OnChanges {
 
   // Method to close the notification
   closeNotification(): void {
-    this.isVisible = false;  // Set visibility to false to hide the notification
-    console.log('Notification closed.');
+    this.isVisible = false;  // Oculta la notificación cuando el usuario presiona "Aceptar"
   }
 }

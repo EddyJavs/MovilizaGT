@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-inicio',
@@ -8,22 +9,18 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage {
-  constructor(private navCtrl: NavController, private route: ActivatedRoute) {}
+  constructor(private navCtrl: NavController, private route: ActivatedRoute, private appComponent: AppComponent) {
+    this.notificationMessage = '';  // Inicializa el mensaje de notificación
+    this.notificationType = 'info';  // Inicializa el tipo de not
+    this.isNotificationVisible = false;  // Inicializa la visibilidad de la notificación
+    
+  }
 
   ngOnInit() {
-    // Verificar si hay parámetros de notificación
-    this.route.queryParams.subscribe(params => {
-      if (params['notificationMessage']) {
-        this.notificationMessage = params['notificationMessage'];
-        this.notificationType = params['notificationType'];
-        this.isNotificationVisible = true;
-
-        // Ocultar la notificación después de 3 segundos
-        setTimeout(() => {
-          this.isNotificationVisible = false;
-        }, 3000);
-      }
-    });
+    this.notificationMessage = '';  // Inicializa el mensaje de notificación
+    this.notificationType = 'info';  // Inicializa el tipo de not
+    this.isNotificationVisible = false;  // Inicializa la visibilidad de la notificación
+    this.appComponent.showNotification('Correcto', 'success');
   }
 
   goToCreateRoute() {
@@ -34,8 +31,8 @@ export class InicioPage {
     this.navCtrl.navigateForward('/search-route'); // Navega a la página para buscar rutas
   }
 
-  goToPreviousTrips() {
-    this.navCtrl.navigateForward('/previous-trips'); // Navega a la página para ver viajes anteriores
+  goToConductorTrips() {
+    this.navCtrl.navigateForward('/requested-trips'); // Navega a la página para ver viajes anteriores
   }
 
   goToProfile() {
@@ -47,17 +44,17 @@ export class InicioPage {
   }
 
   notificationMessage: string = '';
-  notificationType: 'success' | 'error' | 'warning' | 'info'='info' ;
+  notificationType: 'success' | 'error' | 'warning' | 'info' = 'info';
   isNotificationVisible: boolean = false;  // Agrega esta propiedad
 
   showNotification(message: string, type: 'success' | 'error' | 'info' | 'warning'): void {
     this.notificationMessage = message;
     this.notificationType = type;
     this.isNotificationVisible = true;
-  
+
     // Opción para cerrar automáticamente la notificación después de 3 segundos
     setTimeout(() => {
       this.isNotificationVisible = false;
-    }, 3000);  // 3 segundos
+    }, 6000);  // 3 segundos
   }
 }

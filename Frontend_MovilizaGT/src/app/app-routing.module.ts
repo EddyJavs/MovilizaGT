@@ -33,6 +33,10 @@ const routes: Routes = [
   },  {
     path: 'search-results',
     loadChildren: () => import('./search-results/search-results.module').then( m => m.SearchResultsPageModule)
+  },
+  {
+    path: 'requested-trips',
+    loadChildren: () => import('./requested-trips/requested-trips.module').then( m => m.RequestedTripsPageModule)
   }
 
 ];
