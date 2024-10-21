@@ -1,6 +1,8 @@
 package gt.app.MovilizaGT.controller;
 
+import gt.app.MovilizaGT.Utils.Request.UpdateAccountStatusRequest;
 import gt.app.MovilizaGT.Utils.Response.RegisterResponse;
+import gt.app.MovilizaGT.Utils.Response.StatusResponse;
 import gt.app.MovilizaGT.service.UserService;
 import gt.app.MovilizaGT.Utils.Request.LoginRequest;
 import gt.app.MovilizaGT.entity.Person;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -43,5 +46,38 @@ public class PersonController {
             );
         }
 
+    }
+
+
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/usersByAccountStatus")
+    public ResponseEntity<List<Person>> getUsersByAccountStatus(@RequestParam Integer accountStatus) {
+        try {
+            List<Person> users = userService.getUsersByAccountStatus(accountStatus);
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/updateAccountStatus")
+    public ResponseEntity<StatusResponse> updateAccountStatus(@RequestBody UpdateAccountStatusRequest request) {
+        try {
+            // Llama al servicio para actualizar el accountStatus
+            boolean isUpdated = userService.updateAccountStatus(request.getUserId(), request.getAccountStatus());
+
+            if (isUpdated) {
+                return ResponseEntity.ok(new StatusResponse(true, "Estado de la cuenta actualizado con éxito."));
+            } else {
+                return ResponseEntity.status(404).body(new StatusResponse(false, "Usuario no encontrado."));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(new StatusResponse(false, "Error interno del servidor."));
+        }
     }
 }
