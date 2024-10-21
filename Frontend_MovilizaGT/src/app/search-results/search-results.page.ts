@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { GeneralService } from '../services/general.service';  // Asegúrate de tener el servicio importado
+import { NavController } from '@ionic/angular';
 
 declare var google: any;
 
@@ -15,7 +17,11 @@ export class SearchResultsPage implements OnInit, AfterViewInit {
   directionsServices: any[] = [];  // Lista para almacenar los servicios de direcciones
   directionsRenderers: any[] = [];  // Lista para almacenar los renderizadores de direcciones
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute, 
+    private generalService: GeneralService, 
+    private navCtrl: NavController  // Para manejar la navegación
+  ) {
     this.geocoder = new google.maps.Geocoder();  // Inicializa el geocoder de Google Maps
   }
 
@@ -81,14 +87,39 @@ export class SearchResultsPage implements OnInit, AfterViewInit {
 
   // Función para obtener el nombre del lugar a partir de las coordenadas
   getPlaceNameFromCoordinates(lat: number, lng: number, key: 'startLocation' | 'endLocation', route: any) {
-    const latlng = { lat: parseFloat(lat+''), lng: parseFloat(lng+'') };
-    
+    const latlng = { lat: parseFloat(lat + ''), lng: parseFloat(lng + '') };
+
     this.geocoder.geocode({ location: latlng }, (results: any, status: any) => {
       if (status === 'OK' && results[0]) {
         route[key] = results[0].formatted_address;  // Asignar el nombre del lugar
       } else {
         console.error('Error al obtener el nombre del lugar:', status);
         route[key] = `${lat}, ${lng}`;  // Si no se puede obtener el nombre, mostrar las coordenadas
+      }
+    });
+  }
+
+  // Función para solicitar un viaje
+  requestTrip(route: any) {
+    const tripData = {
+      startPoints: `${route.latitudeStartPoint}, ${route.longitudeStartPoint}`,
+      endPoints: `${route.latitudeEndPoint}, ${route.longitudeEndPoint}`,
+      neededSeats: 1,  // Puedes ajustar esto según lo que el usuario necesite
+      tripStart: new Date().toISOString(),  // Ajusta según el inicio del viaje
+      tripEnd: new Date(new Date().getTime() + 30 * 60 * 1000).toISOString(),  // 30 minutos después
+      FK_userId: 1,  // ID del usuario autenticado
+      FK_routeId: route.routeId  // ID de la ruta seleccionada
+    };
+
+    this.generalService.post('api/createTrip', tripData).subscribe({
+      next: (response) => {
+        console.log('Viaje solicitado exitosamente', response);
+        // Puedes redirigir al usuario o mostrar una notificación de éxito
+        this.navCtrl.navigateBack('/home');  // Redirigir a la página de inicio, por ejemplo
+      },
+      error: (err) => {
+        console.error('Error al solicitar el viaje', err);
+        // Mostrar mensaje de error
       }
     });
   }

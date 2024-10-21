@@ -15,6 +15,7 @@ export class SearchRoutePage implements AfterViewInit {
   searchForm: FormGroup;
   notificationMessage: string = '';  // Mensaje de notificación
   notificationType: 'success' | 'error' | 'info' | 'warning' = 'info';  // Tipo de notificación
+  isNotificationVisible: boolean = false;  // Visibilidad de la notificación
   private map: any;
   private originMarker: any;
   private destinationMarker: any;
@@ -144,6 +145,7 @@ export class SearchRoutePage implements AfterViewInit {
     console.log('Notificación:', message, type);  // Verifica si el método se está ejecutando
     this.notificationMessage = message;
     this.notificationType = type;
+    this.isNotificationVisible = true;
 
     // Ocultar la notificación después de unos segundos (opcional)
     setTimeout(() => {
@@ -182,7 +184,9 @@ export class SearchRoutePage implements AfterViewInit {
               }
             });
           } else {
-            this.showNotification('No se encontraron rutas', 'info');
+            console.log('No se encontraron rutas');
+            this.showNotification('No se encontraron rutas', 'warning');
+            
           }
         },
         error: (err) => {
@@ -194,4 +198,6 @@ export class SearchRoutePage implements AfterViewInit {
       this.showNotification('Por favor, complete todos los campos', 'error');
     }
   }
+
+  
 }
