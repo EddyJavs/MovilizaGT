@@ -1,5 +1,7 @@
 package gt.app.MovilizaGT.controller;
 
+import gt.app.MovilizaGT.Utils.Request.CreateTripStatusRequest;
+import gt.app.MovilizaGT.Utils.Response.StatusResponse;
 import gt.app.MovilizaGT.Utils.Response.TripResponse;
 import gt.app.MovilizaGT.entity.Person;
 import gt.app.MovilizaGT.entity.Route;
@@ -70,15 +72,47 @@ public class TripController {
         }
     }
 
-    @GetMapping("/tripsByRouteCreator")
-    public ResponseEntity<List<Trip>> getTripsByRouteCreator(@RequestParam Integer userIdCreator) {
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/tripsByTripCreator")
+    public ResponseEntity<List<Trip>> getTripsByTripCreatorAndStatus(
+            @RequestParam Integer userIdCreator,
+            @RequestParam String statusTrip) {
         try {
-            List<Trip> trips = tripService.getTripsByRouteCreator(userIdCreator);
+            List<Trip> trips = tripService.getTripsByTripCreatorAndStatus(userIdCreator, statusTrip);
             return ResponseEntity.ok(trips);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
         }
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/tripsByRouteCreator")
+    public ResponseEntity<List<Trip>> getTripsByRouteCreatorAndStatus(
+            @RequestParam Integer userIdCreator,
+            @RequestParam String statusTrip) {
+        try {
+            List<Trip> trips = tripService.getTripsByRouteCreatorAndStatus(userIdCreator, statusTrip);
+            return ResponseEntity.ok(trips);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+
+
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/updateTripStatus")
+    public ResponseEntity<StatusResponse> updateTripStatus(@RequestBody CreateTripStatusRequest request) {
+        try {
+            StatusResponse responseMessage = tripService.updateTripStatus(request);
+            return ResponseEntity.ok(responseMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(new StatusResponse(false, e.getMessage()));
+        }
+    }
+
 
 
 

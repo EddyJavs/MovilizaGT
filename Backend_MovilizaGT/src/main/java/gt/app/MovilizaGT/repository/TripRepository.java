@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.sql.Time;
@@ -36,9 +38,34 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
 
     @Query(value = "SELECT t.* FROM trip t " +
             "JOIN route r ON t.FK_routeId = r.routeId " +
-            "WHERE r.FK_userId = :userIdCreator", nativeQuery = true)
-    List<Trip> findTripsByRouteCreator(@Param("userIdCreator") Integer userIdCreator);
+            "WHERE r.FK_userId = :userIdCreator " +
+            "AND t.statusTrip = :statusTrip " +
+            "ORDER BY t.tripStart DESC", nativeQuery = true)
+    List<Trip> findTripsByTripCreatorAndStatus(@Param("userIdCreator") Integer userIdCreator, @Param("statusTrip") String statusTrip);
 
+
+    //aqui me quede con la busqueda por conductor 
+    @Query(value = "SELECT t.* FROM trip t " +
+            "JOIN route r ON t.FK_routeId = r.routeId " +
+            "WHERE r.FK_userId = :userIdCreator " +
+            "AND t.statusTrip = :statusTrip " +
+            "ORDER BY t.tripStart DESC", nativeQuery = true)
+    List<Trip> findTripsByRouteCreatorAndStatus(@Param("userIdCreator") Integer userIdCreator, @Param("statusTrip") String statusTrip);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Trip t SET t.statusTrip = 'solicitado', t.agreedPrice = null WHERE t.tripId = :tripId")
+    void updateStatusToSolicitado(@Param("tripId") Integer tripId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Trip t SET t.statusTrip = 'aceptado', t.acceptedAt = :acceptedAt WHERE t.tripId = :tripId ")
+    void updateStatusToAceptado(@Param("tripId") Integer tripId, @Param("acceptedAt") LocalDateTime acceptedAt);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Trip t SET t.agreedPrice = :agreedPrice WHERE t.tripId = :tripId")
+    void updateAgreedPrice(@Param("tripId") Integer tripId, @Param("agreedPrice") BigDecimal agreedPrice);
 
 
 }
