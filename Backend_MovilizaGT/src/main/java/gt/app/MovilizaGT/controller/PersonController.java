@@ -23,10 +23,10 @@ public class PersonController {
         Optional<Person> user = userService.login(loginRequest.getEmail(), loginRequest.getPass());
 
         if (user.isPresent()) {
-            // Retorna los datos del usuario si está presente
-            return ResponseEntity.ok(user.get());
+            Person person = user.get();
+            //System.out.println(person.toString());
+            return ResponseEntity.ok(person);
         } else {
-            // Retorna un mensaje de error si no encuentra el usuario
             return ResponseEntity.status(401).body("Usuario o contraseña incorrectos.");
         }
     }
