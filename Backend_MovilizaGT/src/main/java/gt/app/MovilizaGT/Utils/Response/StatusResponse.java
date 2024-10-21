@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TripResponse {
+public class StatusResponse {
     private Boolean success;
     private String message;
 }

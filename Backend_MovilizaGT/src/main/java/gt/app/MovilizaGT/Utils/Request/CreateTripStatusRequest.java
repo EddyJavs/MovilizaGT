@@ -1,20 +1,19 @@
 package gt.app.MovilizaGT.Utils.Request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import gt.app.MovilizaGT.entity.Person;
 import lombok.Data;
 
-import java.sql.Time;
-import java.sql.Date;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Data
-public class CreateRouteRequest {
-    private Time departureTime;
-    private Date departureDate;
-    private Integer availableSeats;
+public class CreateTripStatusRequest {
 
-    @JsonProperty("FK_userId")
-    private Integer FK_userId;
-    private List<CreateStandRequest> stands;
+    @JsonProperty("estado")
+    private String estado;
+
+    @JsonProperty("precio")
+    private BigDecimal precio; // Precio puede ser opcional, así que Double es nullable
+
+    @JsonProperty("viajeId")
+    private Integer viajeId;
 }

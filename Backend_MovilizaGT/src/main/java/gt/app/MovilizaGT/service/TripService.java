@@ -1,5 +1,7 @@
 package gt.app.MovilizaGT.service;
 
+import gt.app.MovilizaGT.Utils.Request.CreateTripStatusRequest;
+import gt.app.MovilizaGT.Utils.Response.StatusResponse;
 import gt.app.MovilizaGT.Utils.Response.TripResponse;
 import gt.app.MovilizaGT.entity.Route;
 import gt.app.MovilizaGT.entity.Trip;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -71,8 +74,46 @@ public class TripService {
         }
     }
 
-    public List<Trip> getTripsByRouteCreator(Integer userIdCreator) {
-        return tripRepository.findTripsByRouteCreator(userIdCreator);
+    public List<Trip> getTripsByRouteCreatorAndStatus(Integer userIdCreator, String statusTrip) {
+        return tripRepository.findTripsByRouteCreatorAndStatus(userIdCreator, statusTrip);
+    }
+
+
+    public StatusResponse updateTripStatus(CreateTripStatusRequest request) throws Exception {
+        // Buscar el viaje por el viajeId proporcionado en el JSON
+        Optional<Trip> tripOptional = tripRepository.findById(request.getViajeId());
+
+        if (tripOptional.isPresent()) {
+            Trip trip = tripOptional.get();
+            String estado = request.getEstado();
+            BigDecimal precioRecibido = request.getPrecio() != null ? request.getPrecio() : BigDecimal.ZERO;
+
+            switch (estado) {
+                case "2": // Estado 2: Solicitud
+                    // Actualizar estado a "solicitado" y limpiar el precio
+                    tripRepository.updateStatusToSolicitado(trip.getTripId());
+                    return new StatusResponse(true, "El estado del viaje se ha actualizado a 'solicitado'.");
+
+                case "3": // Estado 3: Aceptado
+                    if (trip.getAgreedPrice() == null) {
+                        // Si el precio acordado es nulo, lo actualiza con el precio recibido
+                        tripRepository.updateAgreedPrice(trip.getTripId(), precioRecibido);
+                        return new StatusResponse(true, "Precio ingresado exitosamente.");
+                    } else if (trip.getAgreedPrice().compareTo(precioRecibido) != 0) {
+                        // Si los precios no coinciden
+                        return new StatusResponse(false, "El precio proporcionado no coincide con el precio acordado.");
+                    } else {
+                        // Si los precios coinciden, actualizar estado a "aceptado" y la fecha de aceptación
+                        tripRepository.updateStatusToAceptado(trip.getTripId(), LocalDateTime.now());
+                        return new StatusResponse(true, "Viaje aceptado con el precio acordado.");
+                    }
+
+                default:
+                    return new StatusResponse(false, "Estado no válido.");
+            }
+        } else {
+            return new StatusResponse(false, "El viaje con ID " + request.getViajeId() + " no existe.");
+        }
     }
 
 
