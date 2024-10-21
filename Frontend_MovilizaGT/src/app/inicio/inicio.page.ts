@@ -31,8 +31,12 @@ export class InicioPage {
     this.navCtrl.navigateForward('/search-route'); // Navega a la página para buscar rutas
   }
 
+  goToPassengerTrips() {
+    this.navCtrl.navigateForward('/passenger-trips'); // Navega a la página para ver viajes anteriores
+  }
+
   goToConductorTrips() {
-    this.navCtrl.navigateForward('/requested-trips'); // Navega a la página para ver viajes anteriores
+    this.navCtrl.navigateForward('/conductor-trips'); // Navega a la página para ver viajes anteriores
   }
 
   goToProfile() {

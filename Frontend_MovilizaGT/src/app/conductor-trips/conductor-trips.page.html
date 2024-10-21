@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mis Viajes como Conductor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-item>
+    <ion-label>Filtrar por estado</ion-label>
+    <ion-select [(ngModel)]="selectedStatus" (ionChange)="onStatusChange($event)">
+      <ion-select-option value="pendiente">Pendiente</ion-select-option>
+      <ion-select-option value="solicitado">Solicitado</ion-select-option>
+      <ion-select-option value="aceptado">Aceptado</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-list *ngIf="trips.length > 0">
+    <ion-item *ngFor="let trip of trips">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Viaje con {{ trip.route.person.fullName }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+        <!--
+          <p><strong>Desde:</strong> {{ trip.startLocation }}</p>
+          <p><strong>Hasta:</strong> {{ trip.endLocation }}</p>
+          --> 
+
+          
+          <p><strong>Fecha de inicio:</strong> {{ trip.tripStart }}</p>
+          <p><strong>Fecha de fin:</strong> {{ trip.tripEnd }}</p>
+          <p><strong>Asientos solicitados:</strong> {{ trip.neededSeats }}</p>
+          <p><strong>Precio Acordado:</strong> {{ trip.agreedPrice }}</p>
+          <p><strong>Estado del viaje:</strong> {{ trip.statusTrip }}</p>
+
+          <!-- Mostrar opción de ingresar precio y aceptar si el estado es 'solicitado' -->
+          <div *ngIf="trip.statusTrip === 'solicitado'">
+            <!-- Botón para desplegar/ocultar los datos del conductor -->
+            <ion-button expand="block" fill="outline" (click)="toggleConductorDetails(trip)">
+              {{ trip.showConductorDetails ? 'Ocultar' : 'Mostrar' }} Datos del Pasajero
+            </ion-button>
+
+            <!-- Tarjeta de datos del conductor (se despliega si se activa showConductorDetails) -->
+            <ion-card *ngIf="trip.showConductorDetails">
+              <ion-card-header>
+                <ion-card-title>Datos del Pasajero</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <p><strong>Teléfono:</strong> {{ trip.user.phone }}</p>
+                <p><strong>Email:</strong> {{ trip.user.email }}</p>
+                <p><strong>Género:</strong> {{ trip.user.gender }}</p>
+                <p><strong>Edad:</strong> {{ trip.user.age }}</p>
+                <p><strong>Estado de cuenta:</strong> 
+                  <span *ngIf="trip.user.accountStatus === 0">Pendiente</span>
+                  <span *ngIf="trip.user.accountStatus === 1">Aprobada</span>
+                  <span *ngIf="trip.user.accountStatus === 2">Rechazada</span>
+                </p>
+                <p *ngIf="trip.user.photo">
+                  <strong>Foto del Pasajero:</strong>
+                  <img [src]="trip.user.photo" alt="Foto del pasajero" style="width: 100px; height: 100px;" />
+                </p>
+                <p *ngIf="!trip.user.photo">
+                  <strong>Foto del Pasajero:</strong> No disponible
+                </p>
+              </ion-card-content>
+            </ion-card>
+
+            <!-- Ingresar precio acordado y botón para aceptar el viaje -->
+            <ion-item>
+              <ion-label position="floating">Precio Acordado</ion-label>
+              <ion-input type="number" [(ngModel)]="trip.agreedPrice"></ion-input>
+            </ion-item>
+            <ion-button expand="full" color="success" (click)="acceptTrip(trip)">Aceptar Viaje</ion-button>
+          </div>
+
+          <!-- Mostrar calificación solo si el estado es 'aceptado' y la fecha ya pasó -->
+          <div *ngIf="isTripCompleted(trip)">
+            <ion-item>
+              <ion-label>Calificación</ion-label>
+              <ion-select [(ngModel)]="trip.calificationScore">
+                <ion-select-option *ngFor="let score of [0, 1, 2, 3, 4, 5]" [value]="score">{{ score
+                  }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Comentario</ion-label>
+              <ion-textarea [(ngModel)]="trip.calificationComment"></ion-textarea>
+            </ion-item>
+            <ion-button expand="full" (click)="submitCalification(trip)">Enviar Calificación</ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+  <ion-label *ngIf="trips.length === 0">No se encontraron viajes.</ion-label>
+</ion-content>
