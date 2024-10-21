@@ -36,11 +36,10 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
                   @Param("routeId") int routeId);
 
 
-    @Query(value = "SELECT t.* FROM trip t " +
-            "JOIN route r ON t.FK_routeId = r.routeId " +
-            "WHERE r.FK_userId = :userIdCreator " +
-            "AND t.statusTrip = :statusTrip " +
-            "ORDER BY t.tripStart DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM trip  " +
+            "WHERE FK_userId = :userIdCreator " +
+            "AND statusTrip = :statusTrip " +
+            "ORDER BY tripStart DESC", nativeQuery = true)
     List<Trip> findTripsByTripCreatorAndStatus(@Param("userIdCreator") Integer userIdCreator, @Param("statusTrip") String statusTrip);
 
 
