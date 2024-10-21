@@ -51,6 +51,9 @@ public class Person {
     @Column(name = "photo")
     private String photo;
 
+    @Column(name = "accountStatus")
+    private Integer accountStatus;
+
     @Column(name = "createdAt")
     private LocalDateTime createdAt;
 
