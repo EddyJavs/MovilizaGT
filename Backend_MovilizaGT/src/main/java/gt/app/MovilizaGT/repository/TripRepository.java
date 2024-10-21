@@ -43,6 +43,8 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
             "ORDER BY t.tripStart DESC", nativeQuery = true)
     List<Trip> findTripsByTripCreatorAndStatus(@Param("userIdCreator") Integer userIdCreator, @Param("statusTrip") String statusTrip);
 
+
+    //aqui me quede con la busqueda por conductor 
     @Query(value = "SELECT t.* FROM trip t " +
             "JOIN route r ON t.FK_routeId = r.routeId " +
             "WHERE r.FK_userId = :userIdCreator " +
