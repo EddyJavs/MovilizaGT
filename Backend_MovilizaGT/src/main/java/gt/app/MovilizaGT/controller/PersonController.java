@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -43,5 +44,19 @@ public class PersonController {
             );
         }
 
+    }
+
+
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/usersByAccountStatus")
+    public ResponseEntity<List<Person>> getUsersByAccountStatus(@RequestParam Integer accountStatus) {
+        try {
+            List<Person> users = userService.getUsersByAccountStatus(accountStatus);
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
     }
 }
