@@ -69,6 +69,13 @@
 			<artifactId>hibernate-types-52</artifactId>
 			<version>2.16.2</version> <!-- Si prefieres usar Hibernate Types para POINT -->
 		</dependency>
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-storage</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
