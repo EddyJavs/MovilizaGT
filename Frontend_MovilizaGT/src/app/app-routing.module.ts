@@ -42,7 +42,11 @@ const routes: Routes = [
   {
     path: 'conductor-trips',
     loadChildren: () => import('./conductor-trips/conductor-trips.module').then( m => m.ConductorTripsPageModule)
+  },  {
+    path: 'administrator',
+    loadChildren: () => import('./administrator/administrator.module').then( m => m.AdministratorPageModule)
   }
+
 
 ];
 

@@ -50,7 +50,7 @@ export class SearchResultsPage implements OnInit, AfterViewInit {
 
           //hacer peticion para obtener calificacion basado en el id de la ruta.
           console.log('OBTENIENDO CALIFICACION');
-          this.generalService.get('api/qualifications/route', {routeId : route.routeId}).subscribe({
+          this.generalService.get('api/qualifications/route/'+route.routeId).subscribe({
             next: (response: any) => {
               console.log('calificacion encontrada:', response);
               route.calificacion = response.averageScore;
