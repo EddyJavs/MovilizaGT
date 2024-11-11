@@ -119,4 +119,12 @@ public class RouteService {
 
         return rutasEncontradas;
     }
+
+    // En RouteService
+    public Integer getUserIdByRouteId(Integer routeId) {
+        return routeRepository.findById(routeId)
+                .orElseThrow(() -> new RuntimeException("Route not found with id: " + routeId))
+                .getPerson().getUserId();
+    }
+
 }

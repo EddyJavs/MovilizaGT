@@ -7,7 +7,9 @@ import gt.app.MovilizaGT.entity.Qualification;
 import gt.app.MovilizaGT.entity.Person;
 import gt.app.MovilizaGT.entity.Trip;
 import gt.app.MovilizaGT.service.QualificationService;
+import gt.app.MovilizaGT.service.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class QualificationController {
+    @Autowired
+    private RouteService routeService;
 
     @Autowired
     private QualificationService qualificationService;
@@ -52,12 +56,23 @@ public class QualificationController {
         }
     }
 
-    // Nuevo endpoint para obtener la lista de calificaciones y el promedio
-    // Endpoint para listar calificaciones por FK_userId2
+
+
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/qualifications/{userId}")
-    public ResponseEntity<Map<String, Object>> getQualificationsByUserId(@PathVariable Integer userId) {
-        Map<String, Object> response = qualificationService.getQualificationsSummaryByUserId(userId);
-        return ResponseEntity.ok(response);
+    @GetMapping("/qualifications/route/{routeId}")
+    public ResponseEntity<Map<String, Object>> getQualificationsByRouteId(@PathVariable Integer routeId) {
+        try {
+            // Obtener el userId usando el routeId
+            Integer userId = routeService.getUserIdByRouteId(routeId);
+
+            // Usar el userId para obtener las calificaciones
+            Map<String, Object> response = qualificationService.getQualificationsSummaryByUserId(userId);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            // Manejar el caso donde el routeId no sea válido
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Route not found for routeId: " + routeId));
+        }
     }
+
+
 }
