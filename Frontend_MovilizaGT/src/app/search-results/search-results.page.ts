@@ -21,8 +21,8 @@ export class SearchResultsPage implements OnInit, AfterViewInit {
   userId: number | null = null;  // ID del usuario autenticado
 
   constructor(
-    private route: ActivatedRoute, 
-    private generalService: GeneralService, 
+    private route: ActivatedRoute,
+    private generalService: GeneralService,
     private navCtrl: NavController,  // Para manejar la navegación,
     private appComponent: AppComponent
   ) {
@@ -47,7 +47,24 @@ export class SearchResultsPage implements OnInit, AfterViewInit {
         this.routes.forEach((route: any) => {
           this.getPlaceNameFromCoordinates(route.latitudeStartPoint, route.longitudeStartPoint, 'startLocation', route);
           this.getPlaceNameFromCoordinates(route.latitudeEndPoint, route.longitudeEndPoint, 'endLocation', route);
+
+          //hacer peticion para obtener calificacion basado en el id de la ruta.
+          console.log('OBTENIENDO CALIFICACION');
+          this.generalService.get('api/qualifications/route/'+route.routeId).subscribe({
+            next: (response: any) => {
+              console.log('calificacion encontrada:', response);
+              route.calificacion = response.averageScore;
+            },
+            error: (err) => {
+              route.calificacion = 0;
+              console.log('Error al obtener calificacion de la ruta ' + route);
+            }
+          });
+
         });
+
+
+
       }
     });
   }
@@ -111,8 +128,8 @@ export class SearchResultsPage implements OnInit, AfterViewInit {
     });
   }
 
-   // Función para validar la entrada de los asientos
-   validateSeats(route: any) {
+  // Función para validar la entrada de los asientos
+  validateSeats(route: any) {
     route.isValidSeats = route.neededSeats && route.neededSeats > 0 && route.neededSeats <= route.availableSeats;
   }
   // Función para solicitar un viaje
@@ -134,21 +151,21 @@ export class SearchResultsPage implements OnInit, AfterViewInit {
 
     this.generalService.post('api/createTrip', tripData).subscribe({
       next: (response: any) => {
-        if(response.success){
+        if (response.success) {
           console.log('Viaje solicitado exitosamente', response);
           this.appComponent.showNotification('Correcto', 'success');
-        // Puedes redirigir al usuario o mostrar una notificación de éxito
-        this.navCtrl.navigateRoot('/inicio', {
-          queryParams: {
-            notificationMessage: 'Viaje Solicitado Exitosamente, El conductor será notificado y se pondrá en contacto contigo.',
-            notificationType: 'success'
-          }
-        });
-        }else{
+          // Puedes redirigir al usuario o mostrar una notificación de éxito
+          this.navCtrl.navigateRoot('/inicio', {
+            queryParams: {
+              notificationMessage: 'Viaje Solicitado Exitosamente, El conductor será notificado y se pondrá en contacto contigo.',
+              notificationType: 'success'
+            }
+          });
+        } else {
           console.error('Error al solicitar el viaje', response);
           this.showNotification('Error al solicitar el viaje', 'error');
         }
-        
+
       },
       error: (err) => {
         console.error('Error al solicitar el viaje', err);
