@@ -12,37 +12,31 @@ export class RegisterPage implements OnInit {
   registerForm: FormGroup;
   passwordStrengthText: string = '';
   passwordStrengthColor: string = 'medium';
+  selectedFiles: { [key: string]: File } = {};
 
-  constructor(private fb: FormBuilder, private generalService: GeneralService, private navCtrl: NavController) {
-    this.registerForm = this.fb.group({
-      fullName: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern('^[0-9]{8,10}$')]],
-      email: ['', [Validators.required, Validators.email]],
-      dpi: ['', Validators.required],
-      gender: ['', Validators.required],
-      age: ['', [Validators.required, Validators.min(18)]],
-      pass: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required],
-    }, { validator: this.passwordMatchValidator });
-
+  constructor(
+    private fb: FormBuilder,
+    private generalService: GeneralService,
+    private navCtrl: NavController
+  ) {
+    this.registerForm = this.fb.group(
+      {
+        fullName: ['', Validators.required],
+        phone: ['', [Validators.required, Validators.pattern('^[0-9]{8,10}$')]],
+        email: ['', [Validators.required, Validators.email]],
+        dpi: ['', Validators.required],
+        gender: ['', Validators.required],
+        age: ['', [Validators.required, Validators.min(18)]],
+        pass: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required],
+      },
+      { validator: this.passwordMatchValidator }
+    );
   }
 
-  ngOnInit() {
-    this.registerForm = this.fb.group({
-      fullName: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern('^[0-9]{8,10}$')]],
-      email: ['', [Validators.required, Validators.email]],
-      dpi: ['', Validators.required],
-      gender: ['', Validators.required],
-      age: ['', [Validators.required, Validators.min(18)]],
-      pass: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required],
-    }, { validator: this.passwordMatchValidator });
-  }
+  ngOnInit() {}
 
-  // Validador para asegurarse de que las contraseñas coincidan
   passwordMatchValidator(form: FormGroup) {
-    console.log(form);
     const password = form.get('pass')?.value || '';
     const confirmPassword = form.get('confirmPassword')?.value || '';
     return password === confirmPassword ? null : { mismatch: true };
@@ -50,7 +44,6 @@ export class RegisterPage implements OnInit {
 
   checkPasswordStrength() {
     const password = this.registerForm.get('pass')?.value || '';
-    console.log(password);
     if (password.length < 6) {
       this.passwordStrengthText = 'Débil';
       this.passwordStrengthColor = 'danger';
@@ -63,41 +56,43 @@ export class RegisterPage implements OnInit {
     }
   }
 
+  onFileChange(event: any, key: string) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFiles[key] = file;
+    }
+  }
+
   onRegister() {
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
-      const formData = this.registerForm.value;
-
-      // Usamos el servicio general para enviar los datos al backend
-      this.generalService.post<any>('api/auth/register', formData).subscribe({
+      const formData = new FormData();
+      formData.append('email', this.registerForm.get('email')?.value);
+      formData.append('fullName', this.registerForm.get('fullName')?.value);
+      formData.append('phone', this.registerForm.get('phone')?.value);
+      formData.append('dpi', this.registerForm.get('dpi')?.value);
+      formData.append('gender', this.registerForm.get('gender')?.value);
+      formData.append('age', this.registerForm.get('age')?.value);
+      formData.append('pass', this.registerForm.get('pass')?.value);
+  
+      // Archivos de imágenes
+      formData.append('dpiFront', this.selectedFiles['dpiFront']);
+      formData.append('dpiBack', this.selectedFiles['dpiBack']);
+      formData.append('licenseFront', this.selectedFiles['licenseFront']);
+      formData.append('licenseBack', this.selectedFiles['licenseBack']);
+      formData.append('photo', this.selectedFiles['photo']);  // Asegúrate de agregar este campo si el backend lo espera
+  
+      this.generalService.postFormData('api/auth/register', formData).subscribe({
         next: (response) => {
           console.log('Registro exitoso', response);
-          // Redirigir a otra página después del registro exitoso
           this.navCtrl.navigateRoot('/login');
         },
         error: (err) => {
           console.error('Error en el registro', err);
-        }
+        },
       });
     } else {
       console.log('Formulario inválido');
     }
-
   }
-
-  uploadLicenseFront() {
-    // Lógica para subir la imagen de la licencia (frente)
-  }
-
-  uploadLicenseBack() {
-    // Lógica para subir la imagen de la licencia (reverso)
-  }
-
-  uploadDpiFront() {
-    // Lógica para subir la imagen del DPI (frente)
-  }
-
-  uploadDpiBack() {
-    // Lógica para subir la imagen del DPI (reverso)
-  }
+  
 }

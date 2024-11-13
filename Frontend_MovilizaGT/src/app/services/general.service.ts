@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class GeneralService {
-  private baseUrl = environment.apiUrl; // Reemplaza con la URL de tu API
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -23,13 +23,18 @@ export class GeneralService {
     return this.http.get<T>(`${this.baseUrl}/${endpoint}`, { params: httpParams });
   }
 
-  // Método POST
   post<T>(endpoint: string, body: any): Observable<T> {
     return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body);
   }
 
-  // Método DELETE
   delete<T>(endpoint: string): Observable<T> {
     return this.http.delete<T>(`${this.baseUrl}/${endpoint}`);
+  }
+
+  // Nuevo método para enviar datos en formato FormData
+  postFormData<T>(endpoint: string, formData: FormData): Observable<T> {
+    return this.http.post<T>(`${this.baseUrl}/${endpoint}`, formData, {
+      headers: { 'enctype': 'multipart/form-data' },
+    });
   }
 }

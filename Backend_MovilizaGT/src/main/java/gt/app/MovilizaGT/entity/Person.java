@@ -52,9 +52,9 @@ public class Person {
     private String photo;
 
     @Column(name = "accountStatus")
-    private Integer accountStatus;
+    private Integer accountStatus = 0;
 
     @Column(name = "createdAt")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 }
