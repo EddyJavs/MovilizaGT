@@ -58,42 +58,40 @@
           <ion-input formControlName="pass" type="password" (ionInput)="checkPasswordStrength()"></ion-input>
         </ion-item>
 
-        <!-- Nivel de Seguridad de la Contraseña -->
-        <ion-item lines="none">
-          <ion-label [color]="passwordStrengthColor">{{ passwordStrengthText }}</ion-label>
-        </ion-item>
-
         <!-- Confirmar Contraseña -->
         <ion-item>
           <ion-label position="floating">Confirmar Contraseña</ion-label>
           <ion-input formControlName="confirmPassword" type="password"></ion-input>
         </ion-item>
-        <br>
-        <!-- Imágenes Opcionales -->
-        <ion-item-divider>Imágenes Opcionales</ion-item-divider>
 
         <!-- Imagen Licencia (Frente) -->
         <ion-item>
           <ion-label>Imagen Licencia (Frente)</ion-label>
-          <ion-button expand="block" (click)="uploadLicenseFront()">Subir Imagen</ion-button>
+          <input type="file" (change)="onFileChange($event, 'licenseFront')">
         </ion-item>
 
         <!-- Imagen Licencia (Reverso) -->
         <ion-item>
           <ion-label>Imagen Licencia (Reverso)</ion-label>
-          <ion-button expand="block" (click)="uploadLicenseBack()">Subir Imagen</ion-button>
+          <input type="file" (change)="onFileChange($event, 'licenseBack')">
         </ion-item>
 
         <!-- Imagen DPI (Frente) -->
         <ion-item>
           <ion-label>Imagen DPI (Frente)</ion-label>
-          <ion-button expand="block" (click)="uploadDpiFront()">Subir Imagen</ion-button>
+          <input type="file" (change)="onFileChange($event, 'dpiFront')">
         </ion-item>
 
         <!-- Imagen DPI (Reverso) -->
         <ion-item>
           <ion-label>Imagen DPI (Reverso)</ion-label>
-          <ion-button expand="block" (click)="uploadDpiBack()">Subir Imagen</ion-button>
+          <input type="file" (change)="onFileChange($event, 'dpiBack')">
+        </ion-item>
+
+        <!-- Imagen DPI (Reverso) -->
+        <ion-item>
+          <ion-label>Imagen Perfil</ion-label>
+          <input type="file" (change)="onFileChange($event, 'photo')">
         </ion-item>
 
         <!-- Botón de Registro -->

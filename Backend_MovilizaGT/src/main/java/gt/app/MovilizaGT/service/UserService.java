@@ -55,19 +55,18 @@ public class UserService {
 
 
     // Método para actualizar el accountStatus de un usuario
-    public boolean updateAccountStatus(Integer userId, Integer accountStatus) throws Exception {
-        // Busca el usuario por su ID
-        Optional<Person> userOptional = userRepository.findById(userId);
+    public boolean updateAccountStatus(Integer userId, int accountStatus) {
+        if (userId == null) {
+            throw new IllegalArgumentException("El ID del usuario no puede ser nulo.");
+        }
 
+        Optional<Person> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             Person user = userOptional.get();
-            // Actualiza el accountStatus
             user.setAccountStatus(accountStatus);
-            // Guarda los cambios
             userRepository.save(user);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }

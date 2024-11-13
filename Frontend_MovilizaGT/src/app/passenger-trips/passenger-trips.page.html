@@ -13,7 +13,6 @@
   <ion-item>
     <ion-label>Estado del viaje</ion-label>
     <ion-select [(ngModel)]="selectedStatus" (ionChange)="onStatusChange($event)">
-      <ion-select-option value="pendiente">Pendiente</ion-select-option>
       <ion-select-option value="solicitado">Solicitado</ion-select-option>
       <ion-select-option value="aceptado">Aceptado</ion-select-option>
     </ion-select>
@@ -33,7 +32,7 @@
           <p><strong>Fecha de fin:</strong> {{ trip.tripEnd }}</p>
           <p><strong>Asientos solicitados:</strong> {{ trip.neededSeats }}</p>
           <p><strong>Estado del viaje:</strong> {{ trip.statusTrip }}</p>
-
+        
           <!-- Mostrar opción de ingresar precio y aceptar si el estado es 'solicitado' -->
           <div *ngIf="trip.statusTrip === 'solicitado'">
             <!-- Botón para desplegar/ocultar los datos del conductor -->
@@ -67,7 +66,14 @@
             </ion-card>
 
             <!-- Ingresar precio acordado y botón para aceptar el viaje -->
+             
             <ion-item>
+              <ion-card>
+                <div>
+                  <p class="text-red"><strong>Debe comunicarse con el conductor para acordar un precio!!!</strong></p>
+      
+                 </div>
+              </ion-card>
               <ion-label position="floating">Precio Acordado</ion-label>
               <ion-input type="number" [(ngModel)]="trip.agreedPrice"></ion-input>
             </ion-item>

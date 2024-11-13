@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ modalTitle }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="image-container">
+    <img *ngIf="showImages.photo" [src]="showImages.photo" alt="Foto" />
+    <img *ngIf="showImages.dpiFront" [src]="showImages.dpiFront" alt="DPI" />
+    <img *ngIf="showImages.licenseFront" [src]="showImages.licenseFront" alt="Licencia" />
+  </div>
+
+  <ion-footer class="modal-footer">
+    <ion-button expand="full" color="success" (click)="activateUser()">
+      {{ actionLabel }}
+    </ion-button>
+    <ion-button expand="full" color="danger" (click)="close()">Cancelar</ion-button>
+  </ion-footer>
+</ion-content>

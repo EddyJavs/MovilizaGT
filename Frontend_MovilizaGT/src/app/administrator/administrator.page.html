@@ -1,13 +1,60 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>administrator</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">administrator</ion-title>
+      <ion-title size="large">Usuarios</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <h2>Usuarios</h2>
+  <p>Seleccione el estado de cuenta de los usuarios que desea ver</p>
+  <ion-select [(ngModel)]="selectedStatus" (ionChange)="getUsersByStatus()">
+    <ion-select-option value="0">Inactivo</ion-select-option>
+    <ion-select-option value="1">Conductor Activo</ion-select-option>
+    <ion-select-option value="2">Pasajero Activo</ion-select-option>
+    <ion-select-option value="3">Activo</ion-select-option>
+  </ion-select>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>DPI</th>
+              <th *ngIf="selectedStatus !== '3'">Acciones</th>
+              <th *ngIf="selectedStatus === '3'">Fotografía</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.fullName }}</td>
+              <td>{{ user.dpi }}</td>
+
+              <!-- Estado 0: Usuario inactivo, muestra ambos botones -->
+              <td *ngIf="selectedStatus === '0'">
+                <ion-button color="primary" (click)="openModal(user, 'DPI')">Activar Pasajero</ion-button>
+                <ion-button color="primary" (click)="openModal(user, 'Licencia')">Activar Conductor</ion-button>
+              </td>
+
+              <!-- Estado 1: Conductor activo, muestra solo el botón "Activar Pasajero" -->
+              <td *ngIf="selectedStatus === '1'">
+                <ion-button color="primary" (click)="openModal(user, 'DPI')">Activar Pasajero</ion-button>
+              </td>
+
+              <!-- Estado 2: Pasajero activo, muestra solo el botón "Activar Conductor" -->
+              <td *ngIf="selectedStatus === '2'">
+                <ion-button color="primary" (click)="openModal(user, 'Licencia')">Activar Conductor</ion-button>
+              </td>
+
+              <!-- Estado 3: Usuario activo, muestra solo la foto -->
+              <td *ngIf="selectedStatus === '3'">
+                <img [src]="user.photo" alt="User Photo" class="user-photo"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

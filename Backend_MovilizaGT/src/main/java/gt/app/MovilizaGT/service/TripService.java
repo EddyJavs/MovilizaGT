@@ -55,8 +55,8 @@ public class TripService {
             double endLon = Double.parseDouble(endCoords[1]);
 
             // Establecer valores iniciales para el viaje
-            trip.setAgreedPrice(BigDecimal.ZERO);  // Precio inicial 0
-            trip.setStatusTrip("pendiente");       // Estado inicial pendiente
+            trip.setAgreedPrice(null);  // Precio inicial null
+            trip.setStatusTrip("solicitado");       // Estado inicial pendiente
             trip.setAcceptedAt(LocalDateTime.of(1970, 1, 1, 0, 0, 0));  // Fecha inicial no aceptado
 
             // Guardar el viaje con las coordenadas procesadas
