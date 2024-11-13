@@ -1,0 +1,71 @@
+/* Estructura de la tabla */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+  
+  .user-table th,
+  .user-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    word-wrap: break-word;
+    white-space: nowrap;
+  }
+  
+  .user-table th {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .user-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  /* Estilos flexibles para las celdas de botones */
+  .user-table td.button-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px; /* Espacio entre los botones */
+  }
+  
+  /* Configuración responsive para pantallas pequeñas */
+  @media (max-width: 768px) {
+    .user-table th,
+    .user-table td {
+      font-size: 0.9em;
+      padding: 6px;
+    }
+    .user-photo {
+      width: 40px;
+      height: 40px;
+    }
+  
+    /* Apila los botones verticalmente en pantallas pequeñas */
+    .user-table td.button-cell {
+      flex-direction: column;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .user-table th,
+    .user-table td {
+      font-size: 0.8em;
+      padding: 4px;
+    }
+    .user-photo {
+      width: 30px;
+      height: 30px;
+    }
+  
+    /* Asegura que los botones se mantengan apilados en pantallas muy pequeñas */
+    .user-table td.button-cell {
+      flex-direction: column;
+    }
+  }
+  
